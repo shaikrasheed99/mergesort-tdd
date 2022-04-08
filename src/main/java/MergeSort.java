@@ -7,8 +7,8 @@ public class MergeSort {
     }
 
     private void mergeSort(int[] elements, int startIndex, int endIndex) {
-        if (startIndex < endIndex) {
-            int middleIndex = (startIndex + endIndex) / 2;
+        if (isStrictlyLessThan(startIndex, endIndex)) {
+            int middleIndex = calculateMiddleValue(startIndex, endIndex);
             mergeSort(elements, startIndex, middleIndex);
             mergeSort(elements, middleIndex + 1, endIndex);
             merge(elements, startIndex, middleIndex, endIndex);
@@ -21,8 +21,8 @@ public class MergeSort {
         int[] tempArray = new int[elements.length];
         int tempIndex = 0;
 
-        while ((start <= middleIndex) && (end <= endIndex)) {
-            if (elements[start] < elements[end]) {
+        while (isLessThanOrEqualsTo(start, middleIndex) && isLessThanOrEqualsTo(end, endIndex)) {
+            if (isStrictlyLessThan(elements[start], elements[end])) {
                 tempArray[tempIndex] = elements[start];
                 tempIndex += 1;
                 start += 1;
@@ -33,22 +33,34 @@ public class MergeSort {
             }
         }
 
-        while (start <= middleIndex) {
+        while (isLessThanOrEqualsTo(start, middleIndex)) {
             tempArray[tempIndex] = elements[start];
             tempIndex += 1;
             start += 1;
         }
 
-        while (end <= endIndex) {
+        while (isLessThanOrEqualsTo(end, endIndex)) {
             tempArray[tempIndex] = elements[end];
             tempIndex += 1;
             end += 1;
         }
 
         tempIndex = 0;
-        for (int i = startIndex; i <= endIndex; i++) {
+        for (int i = startIndex; isLessThanOrEqualsTo(i, endIndex); i++) {
             elements[i] = tempArray[tempIndex];
             tempIndex += 1;
         }
+    }
+
+    private boolean isLessThanOrEqualsTo(int start, int middleIndex) {
+        return start <= middleIndex;
+    }
+
+    private int calculateMiddleValue(int startIndex, int endIndex) {
+        return (startIndex + endIndex) / 2;
+    }
+
+    private boolean isStrictlyLessThan(int startIndex, int endIndex) {
+        return startIndex < endIndex;
     }
 }
